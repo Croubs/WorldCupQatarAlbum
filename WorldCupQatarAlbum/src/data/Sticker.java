@@ -16,9 +16,9 @@ import java.sql.ResultSet;
  */
 public class Sticker {
   private int id;
-  public String clave;
-  public String nombre;
-  public String pais;
+  public String code;
+  public String name;
+  public String country;
   
   private Connection connect()throws SQLException {
     return DriverManager.getConnection("jdbc:mysql://localhost:3306/PIA_POO?zeroDateTimeBehavior=CONVERT_TO_NULL","root","vermeBrillar50");
@@ -31,9 +31,9 @@ public class Sticker {
     
     rs.next();
     this.id = id;
-    this.clave = rs.getString(2);
-    this.nombre = rs.getString(3);
-    this.pais = rs.getString(4);
+    this.code = rs.getString(2);
+    this.name = rs.getString(3);
+    this.country = rs.getString(4);
     rs.close();
     stmt.close();
     cnn.close();
@@ -42,7 +42,7 @@ public class Sticker {
   public boolean isReapeated() throws SQLException {
     Connection cnn = connect();
     Statement stmt = cnn.createStatement(ResultSet.CONCUR_READ_ONLY, ResultSet.TYPE_SCROLL_INSENSITIVE);
-    ResultSet rs = stmt.executeQuery("SELECT * FROM showRepeated WHERE clave = '" + this.clave + "';");
+    ResultSet rs = stmt.executeQuery("SELECT * FROM showRepeated WHERE clave = '" + this.code + "';");
     Boolean result = false;
     
     if (rs.next()) result = true;

@@ -17,30 +17,30 @@ import java.util.logging.Logger;
  * @author croubs
  */
 public class Album{  
-  public String clave;
-  public String nombre;
-  public String pais;
-  public int cantidad;
+  public String code;
+  public String name;
+  public String country;
+  public int amount;
   
   public Album(){}
   
   public Album(String clave, String nombre, String pais) {
-    this.clave = clave;
-    this.nombre = nombre;
-    this.pais = pais;
+    this.code = clave;
+    this.name = nombre;
+    this.country = pais;
   }
   
   private Album(ResultSet rs) throws SQLException{
-    this.clave = rs.getString(1);
-    this.nombre = rs.getString(2);
-    this.pais = rs.getString(3);
+    this.code = rs.getString(1);
+    this.name = rs.getString(2);
+    this.country = rs.getString(3);
   }
   
   private Album(ResultSet rs, int cantidad) throws SQLException {
-    this.clave = rs.getString(1);
-    this.nombre = rs.getString(2);
-    this.pais = rs.getString(3);
-    this.cantidad = cantidad - 1;
+    this.code = rs.getString(1);
+    this.name = rs.getString(2);
+    this.country = rs.getString(3);
+    this.amount = cantidad - 1;
   }
   
   
@@ -69,7 +69,7 @@ public class Album{
   public ArrayList<Album> showRepeated() throws SQLException {
     Connection cnn = connect();
     Statement stmt = cnn.createStatement(ResultSet.CONCUR_READ_ONLY, ResultSet.TYPE_SCROLL_INSENSITIVE);
-    ResultSet rs = stmt.executeQuery("SELECT * FROM showRepeated ORDER BY pais;");
+    ResultSet rs = stmt.executeQuery("SELECT * FROM showRepeated ORDER BY pais, clave;");
     
     ArrayList<Album> album = new ArrayList();
     
@@ -85,7 +85,7 @@ public class Album{
   public ArrayList<Album> showAlbum() throws SQLException {
     Connection cnn = connect();
     Statement stmt = cnn.createStatement(ResultSet.CONCUR_READ_ONLY, ResultSet.TYPE_SCROLL_INSENSITIVE);
-    ResultSet rs = stmt.executeQuery("SELECT * FROM showAlbum ORDER BY pais;");
+    ResultSet rs = stmt.executeQuery("SELECT * FROM showAlbum ORDER BY pais, clave;");
     
     ArrayList<Album> album = new ArrayList();
     
@@ -104,7 +104,7 @@ public class Album{
     
     ArrayList<Sticker> result = new ArrayList();
     
-    for(int i = 0; i < 50; i++){
+    for(int i = 0; i < 5; i++){
       value = random.nextInt(650) + 1;
       result.add(new Sticker(value));
     }
@@ -115,7 +115,7 @@ public class Album{
     result.forEach((r) -> {
       try {
         // Usar un preparatedStatement
-        stmt.executeQuery("CALL addToAlbum('" + r.clave + "');");
+        stmt.executeQuery("CALL addToAlbum('" + r.code + "');");
       } catch (SQLException ex) {
         Logger.getLogger(Album.class.getName()).log(Level.SEVERE, null, ex);
       }
